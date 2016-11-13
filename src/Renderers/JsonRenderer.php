@@ -1,13 +1,13 @@
 <?php namespace axxapy\Renderers;
 
+use axxapy\Debug\Log;
 use axxapy\Interfaces\WriteStream;
 
 /**
  * Renders Json, sends application/json header
  */
-class Renderer_Json extends Renderer {
+class JsonRenderer extends Renderer {
 	private $pretty_print_enabled = false;
-	private $check_errors         = false;
 	private $force_utf8           = false;
 
 	public function fetch() {
@@ -20,8 +20,8 @@ class Renderer_Json extends Renderer {
 		} else {
 			$json = json_encode($data);
 		}
-		if ($this->isCheckErrors() && json_last_error() != JSON_ERROR_NONE) {
-			trigger_error(json_last_error_msg());
+		if (json_last_error() != JSON_ERROR_NONE) {
+			Log::e(__CLASS__, json_last_error_msg());
 		}
 		return $json;
 	}
@@ -42,23 +42,6 @@ class Renderer_Json extends Renderer {
 	 */
 	public function setPrettyPrintEnabled($pretty_print_enabled) {
 		$this->pretty_print_enabled = (boolean)$pretty_print_enabled;
-		return $this;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function isCheckErrors() {
-		return $this->check_errors;
-	}
-
-	/**
-	 * @param boolean $check_errors
-	 *
-	 * @return $this
-	 */
-	public function setCheckErrors($check_errors) {
-		$this->check_errors = $check_errors;
 		return $this;
 	}
 

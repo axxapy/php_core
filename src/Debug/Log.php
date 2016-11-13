@@ -115,10 +115,6 @@ class Log {
 	 * @param string|null $tag
 	 */
 	public static function setLogLevel($log_level, $tag = null) {
-		/*if (!isset(self::$level_names[$log_level]) && $log_level != self::LEVEL_ALL) {
-			trigger_error('Unknown log level: ' . var_export($log_level, true), E_USER_WARNING);
-			return;
-		}*/
 		if ($tag !== null) {
 			self::$log_level_tag[$tag] = $log_level;
 		} else {
@@ -136,7 +132,7 @@ class Log {
 	 */
 	public static function isLoggable($tag, $log_level) {
 		if (!isset(self::$level_names[$log_level])) {
-			trigger_error('Unknown log level: ' . var_export($log_level, true), E_USER_WARNING);
+			self::e(__CLASS__, 'Unknown log level: ' . var_export($log_level, true));
 			return false;
 		}
 		return (bool)(self::getLogLevel($tag) & $log_level);

@@ -19,5 +19,5 @@ class Controller implements Runnable {
 		return $this->actionDefault(isset($arguments['params']) ? $arguments['params'] : []);
 	}
 
-	protected function actionDefault(array $params = []) {}
+	protected function actionDefault(array $params = []) { }
 }

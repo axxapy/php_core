@@ -1,5 +1,7 @@
 <?php namespace axxapy\Web;
 
+use axxapy\Debug\Log;
+
 class WebRequest {
 	const INPUT_RAW = 7;
 
@@ -13,7 +15,7 @@ class WebRequest {
 	private function checkSource($src) {
 		$valid_sourses = [INPUT_GET, INPUT_POST, INPUT_COOKIE, INPUT_ENV, INPUT_REQUEST, INPUT_SESSION, INPUT_SERVER, self::INPUT_RAW];
 		if (!in_array($src, $valid_sourses)) {
-			trigger_error('unknown source: ' . var_export($src, true), E_USER_WARNING);
+			Log::e(__CLASS__, 'unknown source: ' . var_export($src, true));
 			return false;
 		}
 		return true;
@@ -46,9 +48,9 @@ class WebRequest {
 	}
 
 	/**
-	 * @param int|array $src  INPUT_GET, INPUT_POST, INPUT_* constant from default php set
-	 * @param string $name    name of variable
-	 * @param mixed  $default default value
+	 * @param int|array $src     INPUT_GET, INPUT_POST, INPUT_* constant from default php set
+	 * @param string    $name    name of variable
+	 * @param mixed     $default default value
 	 *
 	 * @return string|null
 	 */
@@ -77,9 +79,9 @@ class WebRequest {
 	}
 
 	/**
-	 * @param int|array $src  INPUT_GET, INPUT_POST, INPUT_* constant from default php set
-	 * @param string $name    name of variable
-	 * @param mixed  $default default value
+	 * @param int|array $src     INPUT_GET, INPUT_POST, INPUT_* constant from default php set
+	 * @param string    $name    name of variable
+	 * @param mixed     $default default value
 	 *
 	 * @return bool|null
 	 */
@@ -98,8 +100,8 @@ class WebRequest {
 
 	/**
 	 * @param int|array $src
-	 * @param string $name
-	 * @param mixed  $default
+	 * @param string    $name
+	 * @param mixed     $default
 	 *
 	 * @return int|null
 	 */

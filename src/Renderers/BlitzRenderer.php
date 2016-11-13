@@ -1,6 +1,8 @@
 <?php namespace axxapy\Renderers;
 
 use axxapy\Context;
+use axxapy\Debug\Log;
+use axxapy\Interfaces\Renderable;
 use axxapy\Interfaces\WriteStream;
 
 if (!extension_loaded('blitz')) {
@@ -52,7 +54,7 @@ final class BlitzCallback extends \Blitz {
 	 */
 	public function __call($name, $args = []) {
 		if (!isset($this->callbacks_map[$name])) {
-			trigger_error("unknown function callback name: '{$name}'", E_USER_WARNING);
+			Log::e(__CLASS__, "unknown function callback name: '{$name}'");
 			return null;
 		}
 		$callback = $this->callbacks_map[$name];
@@ -78,7 +80,7 @@ final class BlitzCallback extends \Blitz {
 
 	public function renderView($name, $args = []) {
 		if (!array_key_exists($name, $this->subviews_map)) {
-			trigger_error("unknown view name: '{$name}'", E_USER_WARNING);
+			Log::e(__CLASS__, "unknown view name: '{$name}'");
 			return null;
 		}
 		$view = $this->subviews_map[$name];
@@ -87,11 +89,11 @@ final class BlitzCallback extends \Blitz {
 			try {
 				$view = new $view($this->Context);
 			} catch (\Exception $ex) {
-				trigger_error('cannot create view object: ' . var_export($view, true), E_USER_WARNING);
+				Log::e(__CLASS__, 'cannot create view object: ' . var_export($view, true));
 			}
 		}
-		if (!$view instanceof View) {
-			trigger_error("wrong view class: ({$name}) " . get_class($view), E_USER_WARNING);
+		if (!$view instanceof Renderable) {
+			Log::e(__CLASS__, "wrong view class: ({$name}) " . get_class($view));
 			return null;
 		}
 		return (string)$view->fetch();
