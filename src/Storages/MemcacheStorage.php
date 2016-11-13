@@ -7,7 +7,7 @@ use axxapy\Interfaces\Storage;
 use Memcached;
 use RuntimeException;
 
-class Cache_Memcache implements Storage {
+class MemcacheStorage implements Storage {
 	/** @var Context */
 	private $Context;
 
