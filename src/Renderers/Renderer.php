@@ -1,6 +1,7 @@
 <?php namespace axxapy\Renderers;
 
 use axxapy\Context;
+use axxapy\Debug\Log;
 use axxapy\Interfaces\Renderable;
 
 abstract class Renderer implements Renderable {
@@ -63,7 +64,12 @@ abstract class Renderer implements Renderable {
 	}
 
 	public function __toString() {
-		return $this->fetch();
+		try {
+			return $this->fetch();
+		} catch (\Throwable $t) {
+			Log::e(__CLASS__, $t->getMessage(), $t);
+		}
+		return null;
 	}
 
 	/**

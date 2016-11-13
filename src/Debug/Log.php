@@ -3,6 +3,7 @@
 use axxapy\Interfaces\WriteStream;
 use axxapy\Streams\ErrorLogStream;
 use axxapy\Streams\FileWriteStream;
+use Throwable;
 
 /**
  * API for sending log output.
@@ -67,7 +68,7 @@ class Log {
 		return self::ERROR | self::WARNING | self::WTF | self::INFO;
 	}
 
-	private static function _log($level, $tag, $msg, \Exception $ex = null) {
+	private static function _log($level, $tag, $msg, Throwable $ex = null) {
 		if (!self::isLoggable($tag, $level)) return;
 
 		$str = sprintf("[%s] [%s] [%s] %s", date('Y-m-d_H:i:s'), self::$level_names[$level], $tag, $msg);
@@ -157,9 +158,9 @@ class Log {
 	 *
 	 * @param string     $tag
 	 * @param string     $msg
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 */
-	public static function d($tag, $msg, \Exception $ex = null) {
+	public static function d($tag, $msg, Throwable $ex = null) {
 		self::_log(self::DEBUG, $tag, $msg, $ex);
 	}
 
@@ -168,9 +169,9 @@ class Log {
 	 *
 	 * @param string     $tag
 	 * @param string     $msg
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 */
-	public static function e($tag, $msg, \Exception $ex = null) {
+	public static function e($tag, $msg, Throwable $ex = null) {
 		self::_log(self::ERROR, $tag, $msg, $ex);
 	}
 
@@ -179,9 +180,9 @@ class Log {
 	 *
 	 * @param string     $tag
 	 * @param string     $msg
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 */
-	public static function i($tag, $msg, \Exception $ex = null) {
+	public static function i($tag, $msg, Throwable $ex = null) {
 		self::_log(self::INFO, $tag, $msg, $ex);
 	}
 
@@ -190,9 +191,9 @@ class Log {
 	 *
 	 * @param string     $tag
 	 * @param string     $msg
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 */
-	public static function v($tag, $msg, \Exception $ex = null) {
+	public static function v($tag, $msg, Throwable $ex = null) {
 		self::_log(self::VERBOSE, $tag, $msg, $ex);
 	}
 
@@ -201,9 +202,9 @@ class Log {
 	 *
 	 * @param string     $tag
 	 * @param string     $msg
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 */
-	public static function w($tag, $msg, \Exception $ex = null) {
+	public static function w($tag, $msg, Throwable $ex = null) {
 		self::_log(self::WARNING, $tag, $msg, $ex);
 	}
 
@@ -212,9 +213,9 @@ class Log {
 	 *
 	 * @param string     $tag
 	 * @param string     $msg
-	 * @param \Exception $ex
+	 * @param \Throwable $ex
 	 */
-	public static function wtf($tag, $msg, \Exception $ex = null) {
+	public static function wtf($tag, $msg, Throwable $ex = null) {
 		self::_log(self::WTF, $tag, $msg, $ex);
 	}
 }

@@ -1,5 +1,6 @@
 <?php namespace axxapy;
 
+use axxapy\Debug\Log;
 use axxapy\Interfaces\Runnable;
 use axxapy\Streams\StdoutStream;
 use axxapy\Web\UriBuilder;
@@ -91,6 +92,8 @@ class Router {
 		if (strlen($path) > 1) {
 			$path = rtrim($path, '/');
 		}
+
+		Log::v(__CLASS__, "path: {$path} | {$method}:{$path} | any:{$path}");
 
 		if (isset($this->routes["{$method}:{$path}"]) || isset($this->routes["any:{$path}"])) {
 			$handler = isset($this->routes["{$method}:{$path}"]) ? $this->routes["{$method}:{$path}"] : $this->routes["any:{$path}"];

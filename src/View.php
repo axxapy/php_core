@@ -1,5 +1,6 @@
 <?php namespace axxapy;
 
+use axxapy\Debug\Log;
 use axxapy\Interfaces\Renderable;
 use axxapy\Interfaces\WriteStream;
 
@@ -19,7 +20,12 @@ abstract class View implements Renderable {
 	}
 
 	public function __toString() {
-		return (string)$this->fetch();
+		try {
+			return (string)$this->fetch();
+		} catch (\Throwable $e) {
+			Log::e(__CLASS__, $e->getMessage(), $e);
+		}
+		return null;
 	}
 
 	/**
