@@ -1,5 +1,5 @@
 <?php namespace axxapy\Interfaces;
 
 interface Renderable {
-	public function Render(WriteStream $Stream);
+	public function render(WriteStream $Stream);
 }

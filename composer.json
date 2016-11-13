@@ -1,6 +1,6 @@
 {
-	"name": "axxapy/php_core_interfaces",
-	"description": "Simple error handler with formatted output",
+	"name": "axxapy/php_core",
+	"description": "set of core php classes",
 	"type": "library",
 	"license": "MIT",
 	"authors": [
@@ -13,7 +13,7 @@
 	"require": {},
 	"autoload": {
 		"psr-4": {
-			"axxapy\\Interfaces\\": "src"
+			"axxapy\\": "src"
 		}
 	}
 }

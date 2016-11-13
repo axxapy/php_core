@@ -1,6 +1,6 @@
 <?php namespace axxapy\Interfaces;
 
 interface ReadStream extends Stream {
-	public function Read($count = null);
-	public function ReadLn();
+	public function read($count = null);
+	public function readLn();
 }

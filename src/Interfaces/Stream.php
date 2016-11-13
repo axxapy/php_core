@@ -1,5 +1,5 @@
 <?php namespace axxapy\Interfaces;
 
 interface Stream {
-	public function Close();
+	public function close();
 }

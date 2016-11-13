@@ -7,14 +7,14 @@ interface Storage {
 	 *
 	 * @return mixed
 	 */
-	public function Get($key, $default = null);
+	public function get($key, $default = null);
 
 	/**
 	 * @param string $key
 	 *
 	 * @return $this
 	 */
-	public function Del($key);
+	public function del($key);
 
 	/**
 	 * @param string $key
@@ -22,22 +22,22 @@ interface Storage {
 	 *
 	 * @return $this
 	 */
-	public function Set($key, $val);
+	public function set($key, $val);
 
 	/**
 	 * @param array $data
 	 *
 	 * @return $this
 	 */
-	public function SetMulti(array $data);
+	public function setMulti(array $data);
 
 	/**
 	 * @return $this
 	 */
-	public function Destroy();
+	public function destroy();
 
 	/**
 	 * @return $this
 	 */
-	public function Commit();
+	public function commit();
 }
