@@ -209,7 +209,7 @@ class Router {
 			$this->setControllerStatData(get_class($Controller) . ':' . $action_name);
 
 			if ($Controller instanceof Runnable) {
-				return $Controller->run($params);
+				return $Controller->run(['__action_name__' => $action_name] + $params);
 			}
 
 			throw new RuntimeException('Controller should be instance of \AF\Controller_Base');

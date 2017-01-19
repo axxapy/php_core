@@ -14,9 +14,11 @@ class Controller implements Runnable {
 	}
 
 	public function run(array $arguments = []) {
-		$action = isset($arguments['action']) ? $arguments['action'] : 'actionDefault';
-		if (!method_exists($this, $action)) return false;
-		return $this->actionDefault(isset($arguments['params']) ? $arguments['params'] : []);
+		$action = isset($arguments['__action_name__']) ? $arguments['__action_name__'] : 'actionDefault';
+		if (!method_exists($this, $action)) {
+			throw new \RuntimeException("Method {$arguments['__action_name__']} not found in " . get_class($this));
+		}
+		return $this->$action(isset($arguments['params']) ? $arguments['params'] : []);
 	}
 
 	protected function actionDefault(array $params = []) { }
