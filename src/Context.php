@@ -1,6 +1,6 @@
 <?php namespace axxapy;
 
-use AF\MemcacheStorage;
+use axxapy\MemcacheStorage;
 use axaxpy\Storages\SessionStorage;
 
 class Context {

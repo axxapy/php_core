@@ -1,4 +1,4 @@
-<?php namespace AF;
+<?php namespace axxapy;
 
 use axxapy\Context;
 use axxapy\Debug\Log;
