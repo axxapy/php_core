@@ -37,4 +37,8 @@ class Context {
 		}
 		return $this->CacheAdapter;
 	}
+
+	public function __toString() {
+		return spl_object_hash($this);
+	}
 }
