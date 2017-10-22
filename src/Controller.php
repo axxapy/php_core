@@ -18,7 +18,7 @@ class Controller implements Runnable {
 		if (!method_exists($this, $action)) {
 			throw new \RuntimeException("Method {$arguments['__action_name__']} not found in " . get_class($this));
 		}
-		return $this->$action(isset($arguments['params']) ? $arguments['params'] : []);
+		return $this->$action($arguments);
 	}
 
 	protected function actionDefault(array $params = []) { }
