@@ -1,5 +1,6 @@
-<?php namespace axxapy;
+<?php namespace axxapy\Controllers;
 
+use axxapy\Controller;
 use axxapy\Web\WebRequest;
 
 class WebController extends Controller {
