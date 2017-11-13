@@ -1,4 +1,4 @@
-<?php namespace axaxpy\Storages;
+<?php namespace axxapy\Storages;
 
 use axxapy\Interfaces\Storage;
 use axxapy\Debug\Log;

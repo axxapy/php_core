@@ -1,7 +1,7 @@
 <?php namespace axxapy;
 
 use axxapy\MemcacheStorage;
-use axaxpy\Storages\SessionStorage;
+use axxapy\Storages\SessionStorage;
 
 class Context {
 	private $Config;
