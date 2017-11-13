@@ -225,10 +225,11 @@ final class BlitzRenderer extends Renderer {
 	 * @return string
 	 */
 	public function fetch() {
+		$tpl_dir = $this->tpl_dir ? $this->tpl_dir : $this->getContext()->getConfig()->getValue('dirs/tpl');
 		if (strpos($this->tpl_file, '/') !== 0) {
-			$tpl = ($this->tpl_dir ? $this->tpl_dir : $this->getContext()->getConfig()->getValue('dirs/tpl')) . $this->tpl_file;
+			$tpl = $tpl_dir . '/' . $this->tpl_file;
 		}
-		$blitz = new BlitzCallback($this->getContext(), $tpl, $this->tpl_dir);
+		$blitz = new BlitzCallback($this->getContext(), $tpl, $tpl_dir);
 		$blitz->setCallbacksMap($this->callbacks_map);
 		$blitz->setSubviewsMap($this->subviews_map);
 		if (is_null($this->tpl_file)) $blitz->load($this->tpl_body);

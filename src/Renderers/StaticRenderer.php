@@ -39,11 +39,13 @@ class StaticRenderer implements Renderable {
 	public function render(WriteStream $Stream) {
 		switch ($this->getFileType()) {
 			case self::TYPE_JS:
+				header("Content-type: " . self::CONTENT_TYPE_JAVASCRIPT);
 				$body     = $this->fetchFile($this->base_dir, $this->target_file);
 				$Stream->write($this->cleanJs($body));
 				break;
 
 			case self::TYPE_CSS:
+				header("Content-type: " . self::CONTENT_TYPE_CSS);
 				$body     = $this->fetchFile($this->base_dir, $this->target_file);
 				$Stream->write($this->cleanCss($body));
 				break;
