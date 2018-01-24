@@ -1,6 +1,7 @@
 <?php namespace axxapy\Renderers;
 
 use axxapy\Context;
+use axxapy\Core\ErrorHandler;
 use axxapy\Debug\Log;
 use axxapy\Interfaces\Renderable;
 
@@ -68,6 +69,9 @@ abstract class Renderer implements Renderable {
 			return $this->fetch();
 		} catch (\Throwable $t) {
 			Log::e(__CLASS__, $t->getMessage(), $t);
+			if (Log::isLoggable(__CLASS__, Log::DEBUG)) {
+				return (new ErrorHandler(true))->setOutputFormat(ErrorHandler::OUTPUT_FORMAT_HTML)->formatException($t);
+			}
 		}
 		return null;
 	}
