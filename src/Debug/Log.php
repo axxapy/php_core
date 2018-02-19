@@ -43,20 +43,19 @@ class Log {
 	/** @var \axxapy\Debug\DefaultLogWriter */
 	private static $WriterDefault;
 
-	private static function getLogLevel($tag = null) {
+	private static function getLogLevel($tag = null, $default = null) {
 		if (!empty($tag) && isset(self::$log_level_tag[$tag])) {
 			return self::$log_level_tag[$tag];
 		}
-		if (self::$log_level !== null) {
-			return self::$log_level;
-		}
+		if ($default !== null) return $default;
+		if (self::$log_level !== null) return self::$log_level;
 		return self::ERROR | self::WARNING | self::WTF | self::INFO;
 	}
 
 	private static function _log($level, $tag, $msg, Throwable $ex = null) {
 		foreach (self::$Writers as $item) {
 			$Writer = $item[0]; $writer_level = $item[1];
-			if (!self::isLoggable($tag, $writer_level ? $writer_level : $level)) continue;
+			if (!self::isLoggable($tag, $leve, $writer_level ? $writer_level : null)) continue;
 			if ($Writer->write($level, $tag, $msg, $ex) === true) return; //stop processing other log writers
 		}
 
@@ -94,15 +93,16 @@ class Log {
 	 *
 	 * @param string $tag
 	 * @param int    $log_level
+	 * @param int    $default_log_level
 	 *
 	 * @return bool
 	 */
-	public static function isLoggable($tag, $log_level) {
+	public static function isLoggable($tag, $log_level, $default_log_level = null) {
 		/*if (!isset(self::$level_names[$log_level])) {
 			self::e(__CLASS__, 'Unknown log level: ' . var_export($log_level, true));
 			return false;
 		}*/
-		return (bool)(self::getLogLevel($tag) & $log_level);
+		return (bool)(self::getLogLevel($tag, $default_log_level) & $log_level);
 	}
 
 	/**
