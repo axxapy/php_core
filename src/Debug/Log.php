@@ -1,8 +1,5 @@
 <?php namespace axxapy\Debug;
 
-use axxapy\Interfaces\WriteStream;
-use axxapy\Streams\ErrorLogStream;
-use axxapy\Streams\FileWriteStream;
 use Throwable;
 
 /**
@@ -28,7 +25,7 @@ class Log {
 
 	const LEVEL_ALL = 63; // self::DEBUG | self::ERROR | self::INFO | self::VERBOSE | self::WARNING | self::WTF
 
-	private static $level_names = [
+	public static $level_names = [
 		self::DEBUG   => 'D',
 		self::ERROR   => 'E',
 		self::INFO    => 'I',
@@ -37,26 +34,14 @@ class Log {
 		self::WTF     => 'WTF',
 	];
 
-	private static $stdout = [
-		self::INFO,
-		self::VERBOSE,
-	];
-
-	private static $stderr = [
-		self::DEBUG,
-		self::ERROR,
-		self::WARNING,
-		self::WTF,
-	];
-
 	private static $log_level;
 	private static $log_level_tag = [];
 
-	/** @var \axxapy\Interfaces\Stream */
-	private static $Stream_standard;
+	/** @var [\axxapy\Debug\LogWriterInterface => int] */
+	private static $Writers = [];
 
-	/** @var \axxapy\Interfaces\Stream */
-	private static $Stream_error;
+	/** @var \axxapy\Debug\DefaultLogWriter */
+	private static $WriterDefault;
 
 	private static function getLogLevel($tag = null) {
 		if (!empty($tag) && isset(self::$log_level_tag[$tag])) {
@@ -69,44 +54,24 @@ class Log {
 	}
 
 	private static function _log($level, $tag, $msg, Throwable $ex = null) {
+		foreach (self::$Writers as $Writer => $writer_level) {
+			if (!self::isLoggable($tag, $writer_level ? $writer_level : $level)) continue;
+			if ($Writer->write($level, $tag, $msg, $ex) === true) return; //stop processing other log writers
+		}
+
 		if (!self::isLoggable($tag, $level)) return;
-
-		$str = sprintf("[%s] [%s] [%s] %s", date('Y-m-d_H:i:s'), self::$level_names[$level], $tag, $msg);
-		if ($ex) {
-			$str .= (empty($msg) ? '' : "\n") . (string)$ex;
-		}
-
-		if (in_array($level, self::$stdout)) {
-			self::getStreamStandard()->write($str . PHP_EOL);
-		}
-
-		if (in_array($level, self::$stderr)) {
-			self::getStreamError()->write($str . PHP_EOL);
-		}
+		self::getDefaultLogWriter()->write($level, $tag, $msg, $ex);
 	}
 
-	private static function getStreamStandard() {
-		if (self::$Stream_standard) {
-			return self::$Stream_standard;
-		}
-		if (PHP_SAPI == 'cli') {
-			self::$Stream_standard = new FileWriteStream(STDOUT);
-		} else {
-			self::$Stream_standard = new ErrorLogStream();
-		}
-		return self::$Stream_standard;
+	public static function addLogWriter(LogWriterInterface $Writer, int $level = 0) {
+		self::$Writers[$Writer] = $level;
 	}
 
-	private static function getStreamError() {
-		if (self::$Stream_error) {
-			return self::$Stream_error;
+	public static function getDefaultLogWriter() : DefaultLogWriter {
+		if (!self::$WriterDefault) {
+			self::$WriterDefault = new DefaultLogWriter();
 		}
-		if (PHP_SAPI == 'cli') {
-			self::$Stream_error = new FileWriteStream(STDERR);
-		} else {
-			self::$Stream_error = new ErrorLogStream();
-		}
-		return self::$Stream_error;
+		return self::$WriterDefault;
 	}
 
 	/**
@@ -137,20 +102,6 @@ class Log {
 			return false;
 		}
 		return (bool)(self::getLogLevel($tag) & $log_level);
-	}
-
-	/**
-	 * @param WriteStream $Stream
-	 */
-	public static function setStreamStandard(WriteStream $Stream) {
-		self::$Stream_standard = $Stream;
-	}
-
-	/**
-	 * @param WriteStream $Stream
-	 */
-	public static function setStreamError(WriteStream $Stream) {
-		self::$Stream_error = $Stream;
 	}
 
 	/**
