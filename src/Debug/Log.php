@@ -34,6 +34,15 @@ class Log {
 		self::WTF     => 'WTF',
 	];
 
+	public static $level_names_full = [
+		self::DEBUG   => 'DEBUG',
+		self::ERROR   => 'ERROR',
+		self::INFO    => 'INFO',
+		self::VERBOSE => 'VERBOSE',
+		self::WARNING => 'WARNING',
+		self::WTF     => 'WTF',
+	];
+
 	private static $log_level;
 	private static $log_level_tag = [];
 
