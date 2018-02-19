@@ -64,7 +64,7 @@ class Log {
 	private static function _log($level, $tag, $msg, Throwable $ex = null) {
 		foreach (self::$Writers as $item) {
 			$Writer = $item[0]; $writer_level = $item[1];
-			if (!self::isLoggable($tag, $leve, $writer_level ? $writer_level : null)) continue;
+			if (!self::isLoggable($tag, $level, $writer_level ? $writer_level : null)) continue;
 			if ($Writer->write($level, $tag, $msg, $ex) === true) return; //stop processing other log writers
 		}
 
