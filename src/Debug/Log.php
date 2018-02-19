@@ -54,7 +54,8 @@ class Log {
 	}
 
 	private static function _log($level, $tag, $msg, Throwable $ex = null) {
-		foreach (self::$Writers as $Writer => $writer_level) {
+		foreach (self::$Writers as $item) {
+			$Writer = $item[0]; $writer_level = $item[1];
 			if (!self::isLoggable($tag, $writer_level ? $writer_level : $level)) continue;
 			if ($Writer->write($level, $tag, $msg, $ex) === true) return; //stop processing other log writers
 		}
@@ -64,7 +65,7 @@ class Log {
 	}
 
 	public static function addLogWriter(LogWriterInterface $Writer, int $level = 0) {
-		self::$Writers[$Writer] = $level;
+		self::$Writers[] = [$Writer, $level];
 	}
 
 	public static function getDefaultLogWriter() : DefaultLogWriter {
@@ -97,10 +98,10 @@ class Log {
 	 * @return bool
 	 */
 	public static function isLoggable($tag, $log_level) {
-		if (!isset(self::$level_names[$log_level])) {
+		/*if (!isset(self::$level_names[$log_level])) {
 			self::e(__CLASS__, 'Unknown log level: ' . var_export($log_level, true));
 			return false;
-		}
+		}*/
 		return (bool)(self::getLogLevel($tag) & $log_level);
 	}
 
