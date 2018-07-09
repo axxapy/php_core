@@ -7,11 +7,13 @@ class SessionStorage implements Storage {
 	const TAG = 'SESSION';
 
 	private $id;
+	private $lifetime;
 
-	public function __construct($session_id = null) {
+	public function __construct($session_id = null, $lifetime = 0) {
 		if ($session_id) {
 			$this->id = $session_id;
 		}
+		$this->lifetime = $lifetime;
 	}
 
 	public function isStarted() {
@@ -130,6 +132,7 @@ class SessionStorage implements Storage {
 		if ($this->id) {
 			session_id($this->id);
 		}
+		session_set_cookie_params($this->lifetime);
 		session_start();
 	}
 }

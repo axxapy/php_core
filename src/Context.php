@@ -1,6 +1,5 @@
 <?php namespace axxapy;
 
-use axxapy\MemcacheStorage;
 use axxapy\Storages\SessionStorage;
 
 class Context {
@@ -26,7 +25,7 @@ class Context {
 
 	public function getSession() {
 		if (!$this->Session) {
-			$this->Session = new SessionStorage();
+			$this->Session = new SessionStorage(null, $this->Config->getValue('session_lifetime'));
 		}
 		return $this->Session;
 	}
