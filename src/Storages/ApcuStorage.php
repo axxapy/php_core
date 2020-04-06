@@ -8,7 +8,7 @@ final class ApcuStorage implements Storage {
 		if (!extension_loaded('apcu')) {
 			throw new RuntimeException('apcu extension not loaded');
 		}
-		$enable_key = PHP_SAPI == 'cli' ? 'apc.enabled_cli' : 'apc.enabled';
+		$enable_key = PHP_SAPI == 'cli' ? 'apc.enable_cli' : 'apc.enabled';
 		if (!(bool)ini_get($enable_key)) {
 			throw new RuntimeException('apcu is disabled for ' . PHP_SAPI);
 		}
